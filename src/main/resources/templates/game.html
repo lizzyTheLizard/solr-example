@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en" class="h-100">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${game.title}">Elden Ring</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.css">
+    <style>
+        .container   {
+            padding: 60px 15px 0;
+        }
+        em {
+            background-color: yellow;
+        }
+        .autocomplete {
+            position: relative;
+            display: inline-block;
+        }
+        .autocomplete-items {
+            position: absolute;
+            border: 1px solid #d4d4d4;
+            border-radius: 0.25em;
+            background-color: #fff;
+            z-index: 99;
+            top: 100%;
+            left: 0;
+            right: 0;
+        }
+        .autocomplete-items div {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .autocomplete-items div:hover {
+            /*when hovering an item:*/
+            background-color: #e9e9e9;
+        }
+
+    </style>
+</head>
+
+<body class="d-flex flex-column h-100">
+
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Solr Example</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                </ul>
+                <form class="d-flex autocomplete" method="GET" action="/games">
+                    <input class="form-control me-2" name="search" placeholder="Search" aria-label="Search" id="search" autocomplete="off">
+                    <button class="btn btn-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main class="flex-shrink-0">
+    <div class="container">
+        <h1 class="mt-5" th:text="${game.title}">Elden Ring</h1>
+        <div class="row mb-3">
+            <label for="title" class="col-sm-2 form-label">Title</label>
+            <div class="col-sm-4">
+                    <input type="text" id="title" class="form-control" th:value="${game.title}" value="Elden Ring" disabled>
+            </div>
+            <label for="releaseDate" class="col-sm-2 form-label">Release Date</label>
+            <div class="col-sm-4">
+                <input type="text" id="releaseDate" class="form-control" th:value="${game.releaseDate}" value="Feb 25, 2022" disabled>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="summary" class="form-label">Summary</label>
+            <textarea class="form-control" id="summary" rows="5" th:text="${game.summary}" disabled>Elden Ring is a fantasy, action and open world game with RPG elements such as stats, weapons and spells. Rise, Tarnished, and be guided by grace to brandish the power of the Elden Ring and become an Elden Lord in the Lands Between.</textarea>
+        </div>
+        <div class="row mb-3">
+            <table class="table table-striped table-sm" data-toggle="table">
+                <thead>
+                <tr>
+                    <th data-sortable="true" scope="col">Statistic</th>
+                    <th data-sortable="true" scope="col">Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Team</td>
+                    <td th:text="${#strings.listJoin(game.team, ', ')}">Bandai Namco Entertainment, FromSoftware</td>
+                </tr>
+                <tr>
+                    <td>Genres</td>
+                    <td th:text="${#strings.listJoin(game.genres, ', ')}">Adventure, RPG</td>
+                </tr>
+                <tr>
+                    <td>Rating</td>
+                    <td th:text="${game.rating}">4.5</td>
+                </tr>
+                <tr>
+                    <td>Times Listed</td>
+                    <td th:text="${#numbers.formatInteger(game.timesListed, 0, 'WHITESPACE')}">3 900</td>
+                </tr>
+                <tr>
+                    <td>Number Of Reviews</td>
+                    <td th:text="${#numbers.formatInteger(game.numberOfReviews, 0, 'WHITESPACE')}">3 900</td>
+                </tr>
+                <tr>
+                    <td>Wishlist Entries</td>
+                    <td th:text="${#numbers.formatInteger(game.wishlist, 0, 'WHITESPACE')}">4 800</td>
+                </tr>
+                <tr>
+                    <td>Backlogs Entries</td>
+                    <td th:text="${#numbers.formatInteger(game.backlogs, 0, 'WHITESPACE')}">4 600</td>
+                </tr>
+                <tr>
+                    <td>Playing</td>
+                    <td th:text="${#numbers.formatInteger(game.playing, 0, 'WHITESPACE')}">3 800</td>
+                </tr>
+                <tr>
+                    <td>Plays Entries</td>
+                    <td th:text="${#numbers.formatInteger(game.plays, 0, 'WHITESPACE')}">17000</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row mb-3" th:each="review : ${game.reviews}">
+            <textarea class="form-control" rows="2" th:text="${review}" disabled>Tied as my favorite souls game with Bloodborne, truly one I'll keep coming back too.</textarea>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.js"></script>
+<script>
+    function closeAllLists(){
+        $('.autocomplete-items').each(function() {
+            this.parentNode.removeChild(this);
+        });
+    }
+
+    $(function() {
+        $('#search').on('input', function() {
+            closeAllLists();
+            const input = $(this);
+            $.ajax('http://localhost:8080/api/games/autocomplete?search='+input.val(),{
+                success: function (val) {
+                    const list = $("<div>", {"class": "autocomplete-items"});
+                    val.forEach(s => {
+                        const b1 = $("<div>");
+                        b1.append("<strong>" + s.result + "</strong> (" + s.field  + ")");
+                        b1.on("click", function() {
+                            console.log(s)
+                            if(s.id) {
+                                window.location.href = '/games/' + s.id;
+                                return;
+                            }
+                            const query = s.field + ':' + s.result.replace("<em>", "").replace("</em>", "");
+                            window.location.href = '/games?search='+ encodeURIComponent(query);
+                        });
+                        list.append(b1);
+                    });
+                    input.parent().append(list);
+                },
+                error: function(err) {
+                    console.error(err)
+                }
+            });
+        });
+
+        $('html').on('click', function() {
+            console.log('close all lists');
+            closeAllLists();
+        });
+    });
+</script>
+
+</body>
+</html>
+
+
