@@ -6,7 +6,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - db-data:/var/lib/postgresql
+      - db-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=pwd
   solr:
@@ -17,8 +17,7 @@ services:
       - solr-precreate
       - games
     volumes:
-      - ./src/main/solr/schema.xml:/opt/solr/server/solr/configsets/_default/conf/managed-schema.xml
-      - ./src/main/solr/solrconfig.xml:/opt/solr/server/solr/configsets/_default/conf/solrconfig.xml
+      - ./src/main/solr:/opt/solr/server/solr/configsets/_default/conf
       - solr-data:/var/solr
 volumes:
   solr-data:

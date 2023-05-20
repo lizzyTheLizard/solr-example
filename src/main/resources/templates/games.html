@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="h-100" lang="en">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
@@ -8,145 +8,61 @@
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.css" rel="stylesheet">
-    <style>
-        .container {
-            padding: 60px 15px 0;
-        }
-
-        em {
-            background-color: yellow;
-        }
-
-        .autocomplete {
-            position: relative;
-            display: inline-block;
-        }
-
-        .autocomplete-items {
-            position: absolute;
-            border: 1px solid #d4d4d4;
-            border-radius: 0.25em;
-            background-color: #fff;
-            z-index: 99;
-            top: 100%;
-            left: 0;
-            right: 0;
-        }
-
-        .autocomplete-items div {
-            padding: 10px;
-            cursor: pointer;
-        }
-
-        .autocomplete-items div:hover {
-            /*when hovering an item:*/
-            background-color: #e9e9e9;
-        }
-    </style>
+    <link href="/style.css" rel="stylesheet">
 </head>
-
-<body class="d-flex flex-column h-100">
-
-<header>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">Solr Example</a>
-            <button aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
-                    data-bs-target="#navbarCollapse" data-bs-toggle="collapse" type="button">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                </ul>
-                <form action="/games" class="d-flex autocomplete" method="GET">
-                    <input aria-label="Search" autocomplete="off" class="form-control me-2" id="search" name="search"
-                           placeholder="Search">
-                    <button class="btn btn-success" type="submit">Search</button>
-                </form>
+<body class="d-flex flex-column">
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">Solr Example</a>
+                <button aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+                        data-bs-target="#navbarCollapse" data-bs-toggle="collapse" type="button">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    </ul>
+                    <form action="/games" class="d-flex autocomplete" method="GET">
+                        <input aria-label="Search" autocomplete="off" class="form-control me-2" id="search" name="search"
+                               placeholder="Search">
+                        <button class="btn btn-success" type="submit">Search</button>
+                    </form>
+                </div>
             </div>
+        </nav>
+    </header>
+    <main class="flex-shrink-0">
+        <div class="container">
+            <h1 class="mt-5" th:text="${search == null ? 'All Games' : ('Searched by &quot;' + search + '&quot;')}">All
+                Games</h1>
+            <table class="table table-striped" data-pagination="true" id="searchResults">
+                <thead>
+                <tr>
+                    <th data-sortable="true" scope="col">ID</th>
+                    <th data-sortable="true" scope="col">Title</th>
+                    <th data-sortable="true" scope="col">Release Date</th>
+                    <th data-sortable="true" scope="col">Team</th>
+                    <th data-sortable="true" scope="col">Genres</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="game : ${games}" class="clickable">
+                    <td th:text="${game.id}">1</td>
+                    <td th:text="${game.title}">Elden Ring</td>
+                    <td th:text="${game.releaseDate}">Feb 25, 2022</td>
+                    <td th:text="${#strings.listJoin(game.team, ', ')}">Bandai Namco Entertainment, FromSoftware</td>
+                    <td th:text="${#strings.listJoin(game.genres, ', ')}">Adventure, RPG</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-    </nav>
-</header>
-
-<main class="flex-shrink-0">
-    <div class="container">
-        <h1 class="mt-5" th:text="${search == null ? 'All Games' : ('Searched by &quot;' + search + '&quot;')}">All
-            Games</h1>
-        <table class="table table-striped" data-pagination="true" id="searchResults">
-            <thead>
-            <tr>
-                <th data-sortable="true" scope="col">ID</th>
-                <th data-sortable="true" scope="col">Title</th>
-                <th data-sortable="true" scope="col">Release Date</th>
-                <th data-sortable="true" scope="col">Team</th>
-                <th data-sortable="true" scope="col">Genres</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="game : ${games}">
-                <td th:text="${game.id}">1</td>
-                <td th:text="${game.title}">Elden Ring</td>
-                <td th:text="${game.releaseDate}">Feb 25, 2022</td>
-                <td th:text="${#strings.listJoin(game.team, ', ')}">Bandai Namco Entertainment, FromSoftware</td>
-                <td th:text="${#strings.listJoin(game.genres, ', ')}">Adventure, RPG</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</main>
-
-<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-<script crossorigin="anonymous"
-        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.js"></script>
-
-<script>
-    function closeAllLists() {
-        $('.autocomplete-items').each(function () {
-            this.parentNode.removeChild(this);
-        });
-    }
-
-    $(function () {
-        $('#searchResults').bootstrapTable({
-            onClickRow(item) {
-                window.location.href = '/games/' + item[0];
-            }
-        })
-
-        $('#search').on('input', function () {
-            closeAllLists();
-            const input = $(this);
-            $.ajax('http://localhost:8080/api/games/autocomplete?search=' + input.val(), {
-                success: function (val) {
-                    const list = $("<div>", {"class": "autocomplete-items"});
-                    val.forEach(s => {
-                        const b1 = $("<div>");
-                        b1.append("<strong>" + s.result + "</strong> (" + s.field + ")");
-                        b1.on("click", function () {
-                            if (s.id) {
-                                window.location.href = '/games/' + s.id;
-                                return;
-                            }
-                            const query = s.field + ':' + s.result.replace("<em>", "").replace("</em>", "");
-                            window.location.href = '/games?search=' + encodeURIComponent(query);
-                        });
-                        list.append(b1);
-                    });
-                    input.parent().append(list);
-                },
-                error: function (err) {
-                    console.error(err)
-                }
-            });
-        });
-
-        $('html').on('click', function () {
-            console.log('close all lists');
-            closeAllLists();
-        });
-    });
-</script>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script crossorigin="anonymous"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.js"></script>
+    <script src="/autocomplete.js"></script>
+    <script src="/allGamesTable.js"></script>
 </body>
 </html>

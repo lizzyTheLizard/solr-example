@@ -1,0 +1,3 @@
+# Some examples of synonym groups specific to this example
+GB,gib,gigabyte,gigabytes
+MB,mib,megabyte,megabytes
