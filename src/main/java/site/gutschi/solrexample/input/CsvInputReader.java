@@ -27,6 +27,7 @@ import java.util.stream.StreamSupport;
 @Slf4j
 public class CsvInputReader {
     private static final String CLASSPATH_GAMES_CSV = "classpath:games.csv";
+
     public Collection<Game> readCsv() {
         try (final var csvReader = getReader()) {
             return StreamSupport.stream(csvReader.spliterator(), false)
@@ -70,10 +71,10 @@ public class CsvInputReader {
     }
 
     private Double parseDouble(String input) {
-        if(input == null) {
+        if (input == null) {
             return null;
         }
-        if(input.isEmpty()) {
+        if (input.isEmpty()) {
             return null;
         }
         input = input.replaceAll("K", "000");
@@ -82,38 +83,39 @@ public class CsvInputReader {
     }
 
     private Integer parseInt(String input) {
-        if(input == null) {
+        if (input == null) {
             return null;
         }
-        if(input.isEmpty()) {
+        if (input.isEmpty()) {
             return null;
         }
         return Integer.parseInt(input);
     }
 
     private LocalDate parseDate(String input) {
-        if(input == null) {
+        if (input == null) {
             return null;
         }
-        if(input.isEmpty()) {
+        if (input.isEmpty()) {
             return null;
         }
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("LLL dd, uuuu", Locale.US);
             return LocalDate.parse(input, formatter);
         } catch (Exception e) {
-            log.info("Cannot parse date " + input +", ignore it");
+            log.info("Cannot parse date " + input + ", ignore it");
             return null;
         }
     }
 
     private Collection<String> parseArray(String input) {
-        if(input.isEmpty()) {
+        if (input.isEmpty()) {
             return List.of();
         }
         final var objectMapper = new ObjectMapper();
         objectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
-        final var type = new TypeReference<List<String>>() { };
+        final var type = new TypeReference<List<String>>() {
+        };
         try {
             return objectMapper.readValue(input, type);
         } catch (Exception e) {

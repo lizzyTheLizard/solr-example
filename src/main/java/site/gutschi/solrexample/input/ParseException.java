@@ -8,7 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 public class ParseException extends ResponseStatusException {
     private ParseException(String message, Exception cause) {
-        super(HttpStatus.INTERNAL_SERVER_ERROR, message , cause);
+        super(HttpStatus.INTERNAL_SERVER_ERROR, message, cause);
         log.info(message, cause);
     }
 
@@ -17,7 +17,7 @@ public class ParseException extends ResponseStatusException {
     }
 
     static ParseException wrap(Exception e) {
-        if(e instanceof ParseException) {
+        if (e instanceof ParseException) {
             return (ParseException) e;
         }
         return new ParseException("Could not parse input", e);

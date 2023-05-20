@@ -10,7 +10,7 @@ public class AutocompleteResult implements Comparable<AutocompleteResult> {
 
     @Override
     public int compareTo(AutocompleteResult o) {
-        if(!this.field.equals(o.field)){
+        if (!this.field.equals(o.field)) {
             //First reverse field order, we want title, team, genre
             return o.field.compareTo(this.field);
         }

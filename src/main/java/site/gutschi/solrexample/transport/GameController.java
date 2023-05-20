@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.view.RedirectView;
-import site.gutschi.solrexample.solr.AutocompleteResult;
 import site.gutschi.solrexample.model.Game;
 import site.gutschi.solrexample.model.GameRepository;
+import site.gutschi.solrexample.solr.AutocompleteResult;
 import site.gutschi.solrexample.solr.SearchService;
 
 import java.util.Collection;

@@ -41,7 +41,7 @@ public class SearchService {
     public Collection<AutocompleteResult> autocomplete(String input) {
         input = input.replaceAll("[^\\w*?]", "");
         final var solrQuery = new SolrQuery();
-        solrQuery.set("q", "title:"+ input + "* team:"+ input + "* genre:" + input + "*");
+        solrQuery.set("q", "title:" + input + "* team:" + input + "* genre:" + input + "*");
         solrQuery.set("fl", "none");
         solrQuery.setHighlight(true);
         solrQuery.addHighlightField("*");

@@ -46,17 +46,17 @@ public class IndexService {
         SolrInputDocument document = new SolrInputDocument();
         document.addField("id", game.getId());
         document.addField("title", game.getTitle());
-        if(game.getReleaseDate() != null) {
+        if (game.getReleaseDate() != null) {
             final var dateStr = game.getReleaseDate()
-                            .format(DateTimeFormatter.ISO_DATE)
-                            + "T00:00:00Z";
+                    .format(DateTimeFormatter.ISO_DATE)
+                    + "T00:00:00Z";
             document.addField("releaseDate", dateStr);
         }
         game.getTeam().forEach(t -> document.addField("team", t));
         game.getGenres().forEach(g -> document.addField("genre", g));
         document.addField("summary", game.getSummary());
         game.getReviews().forEach(r -> document.addField("review", r));
-        if(game.getRating() != null) {
+        if (game.getRating() != null) {
             document.addField("rating", game.getRating());
         }
         document.addField("timesListed", game.getTimesListed());
